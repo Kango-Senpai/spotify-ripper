@@ -1,3 +1,4 @@
 old\ src
 pat
 config.json
+src/__pycache__/
