@@ -1,5 +1,7 @@
 import json
 import requests
+
+from misc_utils import clear_screen
 def load_config():
     try:
         with open("config.json",'r') as config_file:
@@ -19,8 +21,11 @@ def validate_config() -> bool:
     return True
 
 def set_config() -> str:
+    clear_screen()
     client_id = input("Please provide your spotify api client id:")
+    clear_screen()
     client_secret = input("Please provide your spotify spi client secret:")
+    clear_screen()
     print("Aquiring access token...")
 
     client_token = request_token(client_id, client_secret)
