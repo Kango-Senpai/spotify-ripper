@@ -1,6 +1,7 @@
 import config
 from misc_utils import clear_screen
-
+from spotify import get_playlist_items
+access_token = ""
 menu_items = []
 
 class Menu_Item:
@@ -9,8 +10,12 @@ class Menu_Item:
         self.function = func_ptr
         menu_items.append(self)
 
+def test_spotify():
+    global access_token
+    get_playlist_items("02mqFPvGpFe4wnNdSDY7Ay",access_token)
+
 def init(): #Wrap main in menu class
-    access_token = ""
+    global access_token
     if not config.validate_config():
         access_token = config.set_config()
     else:
@@ -18,9 +23,11 @@ def init(): #Wrap main in menu class
         access_token = config.request_token(config_obj["spotify_client_id"], config_obj["spotify_client_secret"])
     print("Your access token for this session is '{}'".format(access_token))
     input("Press ENTER to continue...")
+    return access_token
 
 def main():
-    init()
+    access_token = init()
+    print(access_token)
     while True:
         clear_screen()
         for i in range(0,len(menu_items)):
@@ -41,6 +48,7 @@ def main():
 
 
 Menu_Item("Main Menu",None)
-
+Menu_Item("Test spotify", test_spotify)
+Menu_Item("Exit", exit)
 if __name__ == "__main__":
     main()
