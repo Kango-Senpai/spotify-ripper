@@ -4,15 +4,11 @@ from spotify import get_playlist_items
 access_token = ""
 menu_items = []
 
-class Menu_Item:
-    def __init__(self, description, func_ptr):
-        self.desc = description
-        self.function = func_ptr
-        menu_items.append(self)
+
 
 def test_spotify():
     global access_token
-    get_playlist_items("02mqFPvGpFe4wnNdSDY7Ay",access_token)
+    items = get_playlist_items("4HlJ2xsrkRpi3jYI1v60FD",access_token)
 
 def init(): #Wrap main in menu class
     global access_token
