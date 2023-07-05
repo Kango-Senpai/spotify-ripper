@@ -4,7 +4,7 @@ class Menu_Item:
         self.desc = description
         self.function = func_ptr
         target_array.append(self)
-        
+
 def activate_menu(menu_array):
     while True:
         clear_screen()
