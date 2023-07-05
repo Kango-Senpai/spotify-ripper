@@ -1,10 +1,21 @@
 import requests
+def parse_url(playlist_url):
+    #https://open.spotify.com/playlist/6464WxV1gWImrnYQfPnEqO?si=94efac4d66ab445f&pt=124c35ba0096c6f46a9105d2acde533c
+    playlist_id = ""
+    landmark = "playlist/"
+    index = playlist_url.index(landmark)
+    index += len(landmark)
+    
+    while index < len(playlist_url) and playlist_url[index] != '?':
+        playlist_id += playlist_url[index]
+        index += 1
+    return playlist_id
+
 def get_playlist_items(playlist_id, access_token):
     request_header = {"Authorization":f"Bearer {access_token}"}
     song_data = []
     total_items = 70
     batch_size = 50
-
     
     api_request = requests.get(f"https://api.spotify.com/v1/playlists/{playlist_id}",headers=request_header)
     if not api_request.ok:
