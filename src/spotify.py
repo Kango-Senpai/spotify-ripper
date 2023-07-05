@@ -1,6 +1,8 @@
 import requests
+from youtube import playlist_download
+access_token = ""
 
-def spotify_main(access_token):
+def spotify_main():
     playlist_ids = []
     print("Enter a spotify playlist or url to download.")
     print("Type '#' when you're done.")
@@ -10,13 +12,13 @@ def spotify_main(access_token):
             break
         if user_input.strip() == '':
             continue
-        print(user_input)
-        print("https" in user_input)
         if "https" in user_input:
             user_input = parse_url(user_input)
         playlist_ids.append(user_input)
     for playlist_id in playlist_ids:
-        print(get_playlist_items(playlist_id, access_token))
+        playlist_items = get_playlist_items(playlist_id)
+        print(f"Playlist items: {playlist_items[1]}")
+        playlist_download(playlist_items[0],playlist_items[1])
     input()
     
 
@@ -35,7 +37,8 @@ def parse_url(playlist_url):
         index += 1
     return playlist_id
 
-def get_playlist_items(playlist_id, access_token):
+def get_playlist_items(playlist_id):
+    global access_token
     request_header = {"Authorization":f"Bearer {access_token}"}
     song_data = []
     total_items = 70
@@ -47,8 +50,8 @@ def get_playlist_items(playlist_id, access_token):
         return None
     playlist_data = api_request.json()
     total_items = playlist_data["tracks"]["total"]
-    
-    print(f'Fetching data for {total_items} songs from "{playlist_data["name"]}" created by "{playlist_data["owner"]["display_name"]}".')
+    playlist_name = playlist_data["name"]
+    print(f'Fetching data for {total_items} songs from "{playlist_name}" created by "{playlist_data["owner"]["display_name"]}".')
     
     # while index_offset <= total_items:
     for index_offset in range(0, total_items, batch_size):
@@ -64,5 +67,5 @@ def get_playlist_items(playlist_id, access_token):
         for item in playlist_data["items"]:
             song_data.append((item["track"]["artists"][0]["name"],item["track"]["name"])) #Ugly but can't find a way around that right now
         index_offset += batch_size
-    input("Done. Press ENTER to continue...")
-    return song_data
+    
+    return (playlist_name,song_data)
