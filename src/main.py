@@ -4,14 +4,12 @@ from menu import Menu_Item
 from menu import activate_menu
 from youtube import song_prompt
 from spotify import spotify_main
-from spotify import access_token
 import spotify
-from tests import test_playlist_download
 menu_items = []
 
 
 
-def init(): #Wrap main in menu class
+def init() -> None: #Wrap main in menu class
     spotify.access_token
     if not config.validate_config():
         spotify.access_token = config.set_config()
@@ -24,7 +22,6 @@ def init(): #Wrap main in menu class
 Menu_Item("Main Menu", None, menu_items)
 Menu_Item("Download individual song", song_prompt, menu_items)
 Menu_Item("Download full spotify playlist", spotify_main, menu_items)
-Menu_Item("Run test", test_playlist_download, menu_items)
 Menu_Item("Exit", exit , menu_items)#Figure out a cleaner exit method.
 
 if __name__ == "__main__":

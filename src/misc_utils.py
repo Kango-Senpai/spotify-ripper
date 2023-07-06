@@ -3,7 +3,7 @@ import platform
 
 clear_cmd = ""
 
-def clear_screen():
+def clear_screen() -> None:
     os.system(clear_cmd)
 
 if platform.system() != "Windows":

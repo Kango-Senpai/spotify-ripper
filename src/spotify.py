@@ -2,7 +2,7 @@ import requests
 from youtube import playlist_download
 access_token = ""
 
-def spotify_main():
+def spotify_main() -> None:
     playlist_ids = []
     print("Enter a spotify playlist or url to download.")
     print("Type '#' when you're done.")
@@ -23,7 +23,7 @@ def spotify_main():
     
 
 
-def parse_url(playlist_url):
+def parse_url(playlist_url) -> str:
     if "https" not in playlist_url:
         return playlist_url
     #https://open.spotify.com/playlist/6464WxV1gWImrnYQfPnEqO?si=94efac4d66ab445f&pt=124c35ba0096c6f46a9105d2acde533c
@@ -37,7 +37,7 @@ def parse_url(playlist_url):
         index += 1
     return playlist_id
 
-def get_playlist_items(playlist_id):
+def get_playlist_items(playlist_id) -> tuple:
     global access_token
     request_header = {"Authorization":f"Bearer {access_token}"}
     song_data = []

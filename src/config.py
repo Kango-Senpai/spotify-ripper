@@ -2,7 +2,7 @@ import json
 import requests
 
 from misc_utils import clear_screen
-def load_config():
+def load_config() -> object:
     try:
         with open("config.json",'r') as config_file:
             config_obj = json.loads(config_file.read())
@@ -38,7 +38,7 @@ def set_config() -> str:
         config_file.writelines(json.dumps(config_obj))
     return client_token
 
-def request_token(id, secret):
+def request_token(id, secret) -> str:
      
     api_request = requests.post("https://accounts.spotify.com/api/token",
                                     headers={"Content-Type":"application/x-www-form-urlencoded"},
