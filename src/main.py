@@ -20,7 +20,7 @@ def init() -> None: #Wrap main in menu class
     input("Press ENTER to continue...")
 
 Menu_Item("Main Menu", None, menu_items)
-Menu_Item("Download individual song", song_prompt, menu_items)
+Menu_Item("Download from YouTube individually", song_prompt, menu_items)
 Menu_Item("Download full spotify playlist", spotify_main, menu_items)
 Menu_Item("Exit", exit , menu_items)#Figure out a cleaner exit method.
 

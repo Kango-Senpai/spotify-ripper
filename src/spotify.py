@@ -17,9 +17,8 @@ def spotify_main() -> None:
         playlist_ids.append(user_input)
     for playlist_id in playlist_ids:
         playlist_items = get_playlist_items(playlist_id)
-        print(f"Playlist items: {playlist_items[1]}")
         playlist_download(playlist_items[0],playlist_items[1])
-    input()
+    input("Press ENTER to continue...")
     
 
 

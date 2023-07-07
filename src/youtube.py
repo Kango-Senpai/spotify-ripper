@@ -45,5 +45,5 @@ def playlist_download(playlist_name, queries:list) -> None:
         os.mkdir(playlist_name)
     for query in queries:
         individual_download(query)
-    os.system(f"mv *.mp3 {playlist_name}/")
+    os.system(f"mv *.mp3 '{playlist_name}'/")
     print("Playlist downloaded to ./{}/".format(playlist_name))
