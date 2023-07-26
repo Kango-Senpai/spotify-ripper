@@ -1,9 +1,8 @@
 import config
-import os
 from menu import Menu_Item
 from menu import activate_menu
-from youtube import song_prompt
-from spotify import spotify_main
+from youtube import song_prompt, url_prompt
+from spotify import spotify_main, spotify_main_fast
 import spotify
 menu_items = []
 
@@ -20,8 +19,10 @@ def init() -> None: #Wrap main in menu class
     input("Press ENTER to continue...")
 
 Menu_Item("Main Menu", None, menu_items)
-Menu_Item("Download from YouTube individually", song_prompt, menu_items)
-Menu_Item("Download full spotify playlist", spotify_main, menu_items)
+Menu_Item("Download full spotify playlist (For slow computers)", spotify_main, menu_items)
+Menu_Item("Download full spotify playlist (Faster)", spotify_main_fast, menu_items)
+Menu_Item("YouTube search download", song_prompt, menu_items)
+Menu_Item("YouTube URL download", url_prompt, menu_items)
 Menu_Item("Exit", exit , menu_items)#Figure out a cleaner exit method.
 
 if __name__ == "__main__":
