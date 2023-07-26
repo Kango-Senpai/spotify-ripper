@@ -6,8 +6,9 @@ banned_title_phrases = ["official music video", "music video", "official video",
 
 
 def individual_download(song:tuple) -> None:
-    song_str = f"{song[0]}`{song[1]}" if type(song) == type(()) else song
-    print(f"Searching YouTube for '{song_str}'...")
+    song_str = f"{song[0]}-{song[1]}" if type(song) == tuple else song
+    song_str = song_str.replace('/','')
+    print(f"Attempting to download '{song_str}'...")
     opts = {
         "format":"bestaudio",
         "noplaylist":True,
@@ -25,6 +26,15 @@ def individual_download(song:tuple) -> None:
             'preferredquality':'192'
         }]
     }
+
+    if "https://" in song_str:
+        with YoutubeDL(opts) as ydl1:
+            info = ydl1.extract_info(song_str, download=False)
+            opts["outtmpl"] = info["fulltitle"]
+            with YoutubeDL(opts) as ydl2:
+                ydl2.extract_info(song_str)
+        return
+    
     class Banned(Exception):pass
     with YoutubeDL(opts) as ydl:
         search_results = ydl.extract_info(f"ytsearch4:{song_str}",download=False)
@@ -43,7 +53,12 @@ def song_prompt() -> None:
     user_query = input("Search for audio: ")
     individual_download((user_query))
 
+def url_prompt() -> None:
+    user_query = input("Url: ")
+    individual_download(user_query)
+
 def playlist_download(playlist_name, queries:list) -> None:
+    print("Download starting. This may take some time....")
     if not os.path.exists(playlist_name):
         os.mkdir(playlist_name)
     for query in queries:
@@ -52,7 +67,9 @@ def playlist_download(playlist_name, queries:list) -> None:
     print("Playlist downloaded to ./{}/".format(playlist_name))
 
 def playlist_threaded_download(playlist_name, queries:list) -> None:
+    print("Download starting. This may take some time....")
     if not os.path.exists(playlist_name):
+        print("Creating dir '{}'".format(playlist_name))
         os.mkdir(playlist_name)
     
     threads = []
@@ -62,7 +79,7 @@ def playlist_threaded_download(playlist_name, queries:list) -> None:
         t.daemon = True
         threads.append(t)
     
-    print(f"Spawning a total of {len(threads)} threads.")
+    #print(f"Spawning a total of {len(threads)} threads.")
 
     for i in range(0, len(threads),10):
         for j in threads[i:i+9]:

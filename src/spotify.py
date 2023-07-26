@@ -1,5 +1,5 @@
 import requests
-from youtube import playlist_download
+from youtube import playlist_download, playlist_threaded_download
 access_token = ""
 
 def spotify_main() -> None:
@@ -20,12 +20,27 @@ def spotify_main() -> None:
         playlist_download(playlist_items[0],playlist_items[1])
     input("Press ENTER to continue...")
     
-
+def spotify_main_fast() -> None:
+    playlist_ids = []
+    print("Enter a spotify playlist or url to download.")
+    print("Type '#' when you're done.")
+    while True:
+        user_input = input("Playlist id or url: ")
+        if user_input.strip() == '#':
+            break
+        if user_input.strip() == '':
+            continue
+        if "https" in user_input:
+            user_input = parse_url(user_input)
+        playlist_ids.append(user_input)
+    for playlist_id in playlist_ids:
+        playlist_items = get_playlist_items(playlist_id)
+        playlist_threaded_download(playlist_items[0],playlist_items[1])
+    input("Press ENTER to continue...")
 
 def parse_url(playlist_url) -> str:
     if "https" not in playlist_url:
         return playlist_url
-    #https://open.spotify.com/playlist/6464WxV1gWImrnYQfPnEqO?si=94efac4d66ab445f&pt=124c35ba0096c6f46a9105d2acde533c
     playlist_id = ""
     landmark = "/playlist/"
     index = playlist_url.index(landmark)
