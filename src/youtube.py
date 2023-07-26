@@ -1,9 +1,12 @@
 import os
+import threading
+import time
 from yt_dlp import YoutubeDL
 banned_title_phrases = ["official music video", "music video", "official video", "directed"]
 
+
 def individual_download(song:tuple) -> None:
-    song_str = f"{song[0]}-{song[1]}" if type(song) == type(()) else song
+    song_str = f"{song[0]}`{song[1]}" if type(song) == type(()) else song
     print(f"Searching YouTube for '{song_str}'...")
     opts = {
         "format":"bestaudio",
@@ -33,7 +36,7 @@ def individual_download(song:tuple) -> None:
             except Banned:
                 continue
             ydl.download(video["webpage_url"])
-            print("Download complete.")
+            print("Download of '{}' complete.".format(song_str))
             return
 
 def song_prompt() -> None:
@@ -45,5 +48,35 @@ def playlist_download(playlist_name, queries:list) -> None:
         os.mkdir(playlist_name)
     for query in queries:
         individual_download(query)
+    os.system(f"mv *.mp3 '{playlist_name}'/")
+    print("Playlist downloaded to ./{}/".format(playlist_name))
+
+def playlist_threaded_download(playlist_name, queries:list) -> None:
+    if not os.path.exists(playlist_name):
+        os.mkdir(playlist_name)
+    
+    threads = []
+
+    for i in range(len(queries)):
+        t = threading.Thread(target=individual_download,args=[queries[i]])
+        t.daemon = True
+        threads.append(t)
+    
+    print(f"Spawning a total of {len(threads)} threads.")
+
+    for i in range(0, len(threads),10):
+        for j in threads[i:i+9]:
+            j.start()
+        time.sleep(7.5)
+    
+
+    still_working = 1
+    while still_working:
+        still_working = 0
+        for t in threads:
+            if t.is_alive():
+                still_working = 1
+                
+    
     os.system(f"mv *.mp3 '{playlist_name}'/")
     print("Playlist downloaded to ./{}/".format(playlist_name))
