@@ -36,7 +36,7 @@ def parse_url(playlist_url) -> str:
         index += 1
     return playlist_id
 
-def get_playlist_items(playlist_id) -> tuple:
+def get_playlist_items(playlist_id:str) -> tuple:
     global access_token
     request_header = {"Authorization":f"Bearer {access_token}"}
     song_data = []
