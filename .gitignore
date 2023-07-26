@@ -4,3 +4,4 @@ config.json
 tests.py
 __pycache__/*
 __pycache__
+*.mp3
